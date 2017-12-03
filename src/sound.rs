@@ -201,7 +201,12 @@ impl Sound {
         check_openal_context!(());
 
         match self.get_state() {
-            _ => {
+            Paused | Stopped | Initial => {
+                al::alSourceRewind(self.al_source);
+                al::alSourceStop(self.al_source);
+                al::alSourcef(self.al_source, ffi::AL_SEC_OFFSET, seek_sec);
+            },
+            Playing => {
                 al::alSourceRewind(self.al_source);
                 al::alSourceStop(self.al_source);
                 al::alSourcef(self.al_source, ffi::AL_SEC_OFFSET, seek_sec);
