@@ -67,6 +67,18 @@ pub mod ffi {
     pub const AL_BUFFERS_PROCESSED:   i32         = 0x1016;
     pub const AL_BUFFERS_QUEUED:      i32         = 0x1015;
 
+    /// Buffer params
+    pub const AL_FREQUENCY:           i32         = 0x2001;
+    pub const AL_BITS:                i32         = 0x2002;
+    pub const AL_CHANNELS:            i32         = 0x2003;
+    pub const AL_SIZE:                i32         = 0x2004;
+
+
+    /// Source buffer position information
+    pub const AL_SEC_OFFSET:          i32         = 0x1024;
+    pub const AL_SAMPLE_OFFSET:       i32         = 0x1025;
+    pub const AL_BYTE_OFFSET:         i32         = 0x1026;
+
     /// Error identifiers
     pub const AL_NO_ERROR:            i32         = 0;
     pub const AL_INVALID_NAME:        i32         = 0xA001;
@@ -112,6 +124,7 @@ pub mod ffi {
         pub fn alSourcef(source: u32, param: i32, value: f32) -> ();
         pub fn alSourcePlay(source: u32) -> ();
         pub fn alSourcePause(source: u32) -> ();
+        pub fn alSourceRewind(source: u32) -> ();
         pub fn alSourceStop(source: u32) -> ();
         pub fn alGetSourcei(source: u32, param: i32, value: *mut i32) -> ();
         pub fn alGetSourcef(source: u32, param: i32, value: *mut f32) -> ();
@@ -135,6 +148,8 @@ pub mod ffi {
         pub fn alGenBuffers(n: i32, buffers: *mut u32) -> ();
         pub fn alDeleteBuffers(n: i32, buffers: *mut u32);
         pub fn alBufferData(buffer: u32, format: i32, data: *mut c_void, size: i32, freq: i32) -> ();
+        pub fn alGetBufferi(buffer: u32, param: i32, value: *mut i32) -> ();
+
 
         /// Error
         pub fn alGetError() -> i32;
@@ -181,12 +196,21 @@ pub mod al {
         unsafe { ffi::alSourcei(source, param, value); }
     }
 
+    pub fn alGetBufferi(buffer: u32, param: i32, value: *mut i32) -> () {
+        unsafe { ffi::alGetBufferi(buffer, param, value); }
+    }
+
+
     pub fn alSourcef(source: u32, param: i32, value: f32) -> () {
         unsafe { ffi::alSourcef(source, param, value); }
     }
 
     pub fn alSourcePause(source: u32) -> () {
         unsafe { ffi::alSourcePause(source); }
+    }
+
+    pub fn alSourceRewind(source: u32) -> () {
+        unsafe { ffi::alSourceRewind(source); }
     }
 
     pub fn alSourceStop(source: u32) -> () {
@@ -199,6 +223,10 @@ pub mod al {
 
     pub fn alGenSources(n: i32, sources: *mut u32) -> () {
         unsafe {ffi::alGenSources(n, sources); }
+    }
+
+    pub fn alGetError() -> i32 {
+        unsafe { ffi::alGetError() }
     }
 
     pub fn alSourcefv(source: u32, param: i32, value: *const f32) -> () {

@@ -24,6 +24,9 @@
 use std::rc::Rc;
 use std::cell::RefCell;
 
+use std::thread::sleep;
+use std::time::Duration;
+
 use internal::OpenAlData;
 use sound_data;//::*;//{SoundData};
 use sound_data::{SoundData};
@@ -131,6 +134,8 @@ impl Sound {
                       sound_data::get_buffer(&*sound_data
                                              .borrow_mut()) as i32);
 
+        //al::alSourcef(source_id, ffi::AL_SEC_OFFSET, 10.0);
+
         // Check if there is OpenAL internal error
         if let Some(err) = al::openal_has_error() {
              return Err(format!("Internal OpenAL error: {}", err));
@@ -189,6 +194,28 @@ impl Sound {
 
         self.sound_data = sound_data
     }
+
+
+    pub fn get_play_pos(&mut self) -> f32 {
+        let mut seek_sec = 0.0;
+        al::alGetSourcef(self.al_source, ffi::AL_SEC_OFFSET, &mut seek_sec);
+        seek_sec
+    }
+
+    pub fn seek(&mut self, seek_sec : f32) -> () {
+        check_openal_context!(());
+
+        match self.get_state() {
+            _ => {
+                al::alSourceRewind(self.al_source);
+                al::alSourceStop(self.al_source);
+                al::alSourcef(self.al_source, ffi::AL_SEC_OFFSET, seek_sec);
+                al::alSourcePlay(self.al_source);
+            },
+        }
+    }
+
+
 }
 
 impl AudioTags for Sound {
