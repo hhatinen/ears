@@ -11,3 +11,7 @@ travis.log
 
 # Visual Studio Code
 .vscode/.browse.VC.db*
+
+# IntelliJ IDEA
+.idea
+
