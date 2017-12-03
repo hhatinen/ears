@@ -24,9 +24,6 @@
 use std::rc::Rc;
 use std::cell::RefCell;
 
-use std::thread::sleep;
-use std::time::Duration;
-
 use internal::OpenAlData;
 use sound_data;//::*;//{SoundData};
 use sound_data::{SoundData};
@@ -133,8 +130,6 @@ impl Sound {
                       ffi::AL_BUFFER,
                       sound_data::get_buffer(&*sound_data
                                              .borrow_mut()) as i32);
-
-        //al::alSourcef(source_id, ffi::AL_SEC_OFFSET, 10.0);
 
         // Check if there is OpenAL internal error
         if let Some(err) = al::openal_has_error() {
