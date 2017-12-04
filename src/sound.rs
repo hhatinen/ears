@@ -205,6 +205,8 @@ impl Sound {
                 al::alSourceRewind(self.al_source);
                 al::alSourceStop(self.al_source);
                 al::alSourcef(self.al_source, ffi::AL_SEC_OFFSET, seek_sec);
+                al::alSourcePlay(self.al_source);
+                al::alSourcePause(self.al_source);
             },
             Playing => {
                 al::alSourceRewind(self.al_source);
