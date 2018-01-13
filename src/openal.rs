@@ -26,8 +26,10 @@
 
 #![allow(dead_code, non_snake_case)]
 
-#[link(name = "openal")]
-extern {}
+pub mod link {
+    #[link(name = "openal")]
+    extern {}
+}
 
 pub mod ffi {
 
