@@ -16,7 +16,7 @@ fn main () {
 
 #[cfg(all(windows, target_env="msvc"))]
 fn main () {
-    println!("cargo:rustc-link-search=native=.\\lib");
+    println!(r"cargo:rustc-link-search=native=C:\Users\hhati\ears\lib");
 }
 
 
